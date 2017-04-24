@@ -1,0 +1,35 @@
+package Test;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
+
+public class sqlTest {
+	public static void main(String[] args) {
+		
+	
+	  //設定jdbc連結字串，請依你的SQL Server設定值修改
+	  String conUrl = "jdbc:mysql://localhost:3306/jdbc;databaseName=skydream;user=root;password=ji394su3;"; //for jdbc 2.0
+	  Connection con = null;
+	  try {
+	   //註冊JODBC類
+//	   Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+	   Class.forName("com.mysql.jdbc.Driver");
+	   con = DriverManager.getConnection(conUrl);
+	   //SQL語句
+	     String SQL = "SELECT * from emp";
+	     Statement stmt = con.createStatement();
+	     ResultSet rs = stmt.executeQuery(SQL);
+	   //循環搜尋結果，請依你的資料庫來作提取資料欄位，以將下面的資料欄位對映你的資料欄位
+	     while (rs.next()) {
+	     System.out.println(rs.getString("ename") + ", " + rs.getString("empno"));
+	     }
+	     rs.close();
+	     stmt.close();
+	  }
+	  catch (Exception ex) {
+	      ex.printStackTrace();
+	  }
+	}
+}

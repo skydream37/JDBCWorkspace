@@ -1,0 +1,32 @@
+package HW;
+
+import java.io.*;
+import java.sql.*;
+
+public class First {
+	public static void main(String[] args) throws Exception {
+		String connURL = "jdbc:mtsql://localhost:1433;jdbc";
+		try {
+			Connection conn = DriverManager.getConnection(connURL, "root", "ji394su3");
+			String qryStmt = "SELECT * FROM employee";
+			Statement stmt = conn.createStatement();
+			ResultSet rs = stmt.executeQuery(qryStmt);
+
+			File file = new File("res.txt");
+			FileWriter fop = new FileWriter(file);
+			BufferedWriter br = new BufferedWriter(fop);
+			ResultSetMetaData rsmd = rs.getMetaData();
+			int count = rsmd.getColumnCount();
+			while (rs.next()) {
+				for (int i = 0; i <= count; i++) {
+					br.write(rs.getString(i));
+				}
+
+			}
+			conn.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+}

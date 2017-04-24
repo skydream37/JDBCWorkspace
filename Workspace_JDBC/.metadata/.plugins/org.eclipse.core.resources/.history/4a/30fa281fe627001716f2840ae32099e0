@@ -1,0 +1,38 @@
+package com.iii.bb101.king;
+
+import java.sql.*;
+
+public class DatabaseMetaDataDemo {
+	public static void main(String[] args) {
+		Connection conn = null;
+		try {     
+			String connUrl = "jdbc:mysql://localhost:3306/jdbc?useSSL=false";
+			conn = DriverManager.getConnection(connUrl, "root", "ji394su3");
+			
+			DatabaseMetaData dbmd = conn.getMetaData();//p.60 新增metadata物件，用來取得metadata
+			System.out.println("getDatabaseProductName: "+dbmd.getDatabaseProductName());
+			System.out.println("getDriverName: "+dbmd.getDriverName());
+			ResultSet rs = dbmd.getTableTypes();
+			
+			while(rs.next())
+				System.out.print("TABLE_TYPE"+rs.getString("TABLE_TYPE") + ", ");
+			System.out.print("\n");
+			
+			rs = dbmd.getPrimaryKeys(null, null, "EMPLOYEE");//拿到pk
+			while(rs.next()) {
+				System.out.print(rs.getString("TABLE_NAME") + ", ");
+				System.out.print(rs.getString("COLUMN_NAME") + ", ");
+				System.out.print(rs.getString("KEY_SEQ"));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if (conn != null)
+				try {
+					conn.close();
+				} catch(SQLException e) {
+					e.printStackTrace();
+				}
+		}
+	}// end of main()
+}// end of class DatabaseMetaDataDemo 

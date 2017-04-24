@@ -1,0 +1,36 @@
+package HW;
+
+import java.io.*;
+import java.sql.*;
+
+public class Second {
+	public static void main(String[] args) throws Exception {
+		String connUrl = "jdbc:mysql://localhost:3306/jdbc?useSSL=false";
+		try {
+			Connection conn = DriverManager.getConnection(connUrl, "root", "ji394su3");
+			String insStmt = "INSERT INTO employee VALUES (?, ?, ?, ?, ?, ?)";
+			PreparedStatement pstmt = conn.prepareStatement(insStmt);
+
+			FileReader fr = new FileReader("res/tttwww.txt");
+			BufferedReader br = new BufferedReader(fr);
+			String str;
+			while ((str = br.readLine()) != null) {
+				Object str2[] = str.split(",");
+
+				pstmt.setInt(1, (int)str2[0]);
+				pstmt.setString(2, (String)str2[1]);
+				pstmt.setString(3, (String)str2[2]);
+				pstmt.setDouble(4, (Double)str2[3]);
+				pstmt.setInt(5, (int)str2[4]);
+				pstmt.setString(6, (String)str2[5]);
+				pstmt.addBatch();
+				pstmt.executeBatch();
+			}
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+}
